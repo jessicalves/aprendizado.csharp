@@ -14,6 +14,9 @@ namespace Loja
             {
                 nomeCliente = "cliente1",
                 cfpCliente = "123"
+
+
+
             },
             new Cliente()
             {
