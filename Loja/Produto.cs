@@ -1,4 +1,5 @@
 ﻿using System;
+using Npgsql;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,24 +9,7 @@ namespace Loja
 {
     public class Produto
     {
-        public static List<Produto> listProdutos = new List<Produto>()
-        {
-            new Produto
-            {
-                nomeProduto = "produto1",
-                codigoProduto = "963"
-            },
-            new Produto
-            {
-                nomeProduto = "produto2",
-                codigoProduto = "741"
-            },
-            new Produto
-            {
-                nomeProduto = "produto3",
-                codigoProduto = "987"
-            }
-        };
+        public static List<Produto> listProdutos = new List<Produto>(){};
 
         public string nomeProduto;
         public string codigoProduto;
@@ -37,17 +21,30 @@ namespace Loja
             Console.WriteLine("|NOME\t\t" + "|CODIGO\t\t");
             Console.WriteLine("--------------------------------------");
 
-            foreach (var itemProduto in listProdutos)
+            Banco banco = new Banco();
+            banco.sql = ("SELECT id_produto,nome_produto, cod_produto FROM public.produto ORDER BY id_produto");
+
+            NpgsqlDataReader dados = banco.ExecuteReader();
+
+            while (dados.Read())
             {
-                Console.WriteLine("|" + itemProduto.nomeProduto + "\t" + "|" + itemProduto.codigoProduto + "\t");
+                Console.WriteLine("|" + dados[1] + "\t" + "|" + dados[2] + "\t");
             }
             Console.ReadKey();
+
+
+
+            //foreach (var itemProduto in listProdutos)
+            //{
+            //    Console.WriteLine("|" + itemProduto.nomeProduto + "\t" + "|" + itemProduto.codigoProduto + "\t");
+            //}
+            //Console.ReadKey();
         }
 
         public static void cadastrarProduto(Produto produto)
         {
 
-            listProdutos.Add(produto);
+            //listProdutos.Add(produto);
 
         }
 

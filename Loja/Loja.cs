@@ -9,27 +9,14 @@ namespace Loja
 {
     class Loja
     {
-        public static List<Cliente> listClientes = new List<Cliente>() {
-            new Cliente()
-            {
-                nomeCliente = "cliente1",
-                cfpCliente = "123"
-
-
-
-            },
-            new Cliente()
-            {
-                nomeCliente = "cliente2",
-                cfpCliente = "456"
-            }
-        };
+        public static List<Cliente> listClientes = new List<Cliente>() { };
 
         public static void Listar()
         {
             Console.Clear();
             Console.WriteLine("-------- LISTA DE CLIENTES ----------");
-            //Console.WriteLine("--------------------------------------");
+            Console.WriteLine("|NOME\t\t" + "|CPF\t\t");
+            Console.WriteLine("--------------------------------------");
 
             //foreach (var item in listClientes)
             //{
@@ -37,16 +24,18 @@ namespace Loja
             //}
             //Console.ReadKey();
 
-            //Banco banco = new Banco();
+            Banco banco = new Banco();
 
-            //var ds = banco.ExecutarSqlSet("SELECT * FROM public.cliente ORDER BY id_cliente");
-            //Console.WriteLine("|NOME\t\t" + "|CPF\t\t");
+            banco.sql = ("SELECT id_cliente,nome_cliente,cpf_cliente FROM public.cliente ORDER BY id_cliente");
+         
+            NpgsqlDataReader ds = banco.ExecuteReader();
 
-            //while (ds.Read())
-            //{
-            //    Console.WriteLine("|" + ds[1] + "\t" + "|" + ds[2] + "\t");
-            //}
-            //Console.ReadKey();
+            while (ds.Read())
+            {
+                Console.WriteLine("|" + ds[1] + "\t" + "|" + ds[2] + "\t");
+            }            
+            Console.ReadKey();
+
         }
 
         public static void Selecionar(string cpfSelecionado)
@@ -58,6 +47,7 @@ namespace Loja
                                    FROM public.cliente     
                                    WHERE cpf_cliente = @p";
             banco.addParameters("p", cpfProcurado);
+
             var dados = banco.ExecuteReader();
 
             dados.Read();
@@ -65,11 +55,11 @@ namespace Loja
             var nome = dados[1];
             var cpf = dados[2];
 
-            //var clientebanco = new Cliente()
-            //{
-            //    cfpCliente = cpf,
-            //    nomeCliente = nome
-            //};
+            var clientebanco = new Cliente()
+            {
+                cfpCliente = cpf,
+                nomeCliente = nome
+            };
 
             //foreach (var cliente in listClientes)
             //{
