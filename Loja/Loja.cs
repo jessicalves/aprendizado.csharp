@@ -26,7 +26,7 @@ namespace Loja
 
             Banco banco = new Banco();
 
-            banco.sql = ("SELECT id_cliente,nome_cliente,cpf_cliente FROM public.cliente ORDER BY id_cliente");
+            banco.sql = ("SELECT clie_id, clie_nome, clie_cpf FROM public.cliente ORDER BY clie_id");
          
             NpgsqlDataReader ds = banco.ExecuteReader();
 
@@ -43,9 +43,9 @@ namespace Loja
             string cpfProcurado = cpfSelecionado;
 
             Banco banco = new Banco();
-            banco.sql = @"SELECT id_cliente, nome_cliente, cpf_cliente 
+            banco.sql = @"SELECT clie_id, clie_nome, clie_cpf 
                                    FROM public.cliente     
-                                   WHERE cpf_cliente = @p";
+                                   WHERE clie_cpf = @p";
             banco.addParameters("p", cpfProcurado);
 
             var dados = banco.ExecuteReader();
@@ -55,11 +55,11 @@ namespace Loja
             var nome = dados[1];
             var cpf = dados[2];
 
-            var clientebanco = new Cliente()
-            {
-                cfpCliente = cpf,
-                nomeCliente = nome
-            };
+            //var clientebanco = new Cliente()
+            //{
+            //    cfpCliente = cpf,
+            //    nomeCliente = nome
+            //};
 
             //foreach (var cliente in listClientes)
             //{

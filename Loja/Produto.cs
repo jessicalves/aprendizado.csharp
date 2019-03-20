@@ -22,7 +22,7 @@ namespace Loja
             Console.WriteLine("--------------------------------------");
 
             Banco banco = new Banco();
-            banco.sql = ("SELECT id_produto,nome_produto, cod_produto FROM public.produto ORDER BY id_produto");
+            banco.sql = ("SELECT prod_id,prod_nome, prod_codigo FROM public.produto ORDER BY prod_id");
 
             NpgsqlDataReader dados = banco.ExecuteReader();
 
