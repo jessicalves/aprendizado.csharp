@@ -82,7 +82,10 @@ namespace Loja
                     
                         Console.Write("NOVO NOME PRODUTO: ");
                         itemProduto.nomeProduto = Console.ReadLine();
-                        
+
+                        Console.Write("NOVO VALOR DO PRODUTO: ");
+                        itemProduto.valorProduto = Convert.ToDouble(Console.ReadLine());
+
                     }                    
                 }
 
