@@ -181,6 +181,7 @@ namespace Loja
                             bool cadastrarMaisProduto = true;
                             string nomeProd;
                             string codigoProd;
+                            double valorProd;
 
                             while (cadastrarMaisProduto == true)
                             {
@@ -190,11 +191,14 @@ namespace Loja
                                 nomeProd = Console.ReadLine();
                                 Console.WriteLine("\nCODIGO DO PRODUTO:");
                                 codigoProd = Console.ReadLine();
+                                Console.WriteLine("\nVALOR DO PRODUTO:");
+                                valorProd = Convert.ToDouble(Console.ReadLine());
                                 Console.WriteLine("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
                                 Produto novoProduto = new Produto();
                                 novoProduto.nomeProduto = nomeProd;
                                 novoProduto.codigoProduto = codigoProd;
+                                novoProduto.valorProduto = valorProd;
 
                                 Produto.cadastrarProduto(novoProduto);
 

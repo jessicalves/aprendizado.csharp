@@ -17,6 +17,7 @@ namespace Loja
         public List<Produto> listaProdutosComprados;
 
         public int idPedido;
+        public int quantidadeProduto;
 
         public void adicionarProduto(string produtos)
         {

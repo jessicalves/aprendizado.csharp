@@ -13,32 +13,25 @@ namespace Loja
 
         public string nomeProduto;
         public string codigoProduto;
+        public double valorProduto;
 
         public static void listarProdutos()
         {
             Console.Clear();
             Console.WriteLine("-------- LISTA DE PRODUTOS -----------");
-            Console.WriteLine("|NOME\t\t" + "|CODIGO\t\t");
+            Console.WriteLine("|NOME\t\t" + "|CODIGO\t" + "|VALOR R$");
             Console.WriteLine("--------------------------------------");
 
             Banco banco = new Banco();
-            banco.sql = ("SELECT prod_id,prod_nome, prod_codigo FROM public.produto ORDER BY prod_id");
+            banco.sql = ("SELECT prod_id,prod_nome, prod_codigo, prod_valor FROM public.produto ORDER BY prod_id");
 
             NpgsqlDataReader dados = banco.ExecuteReader();
 
             while (dados.Read())
             {
-                Console.WriteLine("|" + dados[1] + "\t" + "|" + dados[2] + "\t");
+                Console.WriteLine("|" + dados[1] + "\t" + "|" + dados[2] + "\t" + "|" + dados[3] + "\t");
             }
             Console.ReadKey();
-
-
-
-            //foreach (var itemProduto in listProdutos)
-            //{
-            //    Console.WriteLine("|" + itemProduto.nomeProduto + "\t" + "|" + itemProduto.codigoProduto + "\t");
-            //}
-            //Console.ReadKey();
         }
 
         public static void cadastrarProduto(Produto produto)
