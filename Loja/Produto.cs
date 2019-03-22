@@ -1,19 +1,18 @@
-﻿using System;
-using Npgsql;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Loja
 {
     public class Produto
     {
-        public static List<Produto> listProdutos = new List<Produto>(){};
+        public static List<Produto> listProdutos = new List<Produto>() { };
+
+
 
         public string nomeProduto;
         public string codigoProduto;
-        public double valorProduto;
+        public string valorProduto;
 
         public static void listarProdutos()
         {
@@ -36,9 +35,13 @@ namespace Loja
 
         public static void cadastrarProduto(Produto produto)
         {
+            Banco banco = new Banco();
+            banco.sql = @"INSERT INTO public.produto (prod_nome,prod_codigo,prod_valor) VALUES (@nome,@codigo,@valor)";
+            banco.addParameters("nome", produto.nomeProduto);
+            banco.addParameters("codigo", produto.codigoProduto);
+            banco.addParameters("valor", produto.valorProduto);
 
-            //listProdutos.Add(produto);
-
+            var dados = banco.ExecuteReader();
         }
 
         public static void RremoverProduto(string codigoParaRemover)
@@ -61,34 +64,56 @@ namespace Loja
         {
             string codigoProcurado = codigoSelecionado;
 
-            foreach (var itemProduto in listProdutos)
+            Banco banco = new Banco();
+            banco.sql = @"SELECT prod_id, prod_nome, prod_codigo,prod_valor 
+                                   FROM public.produto     
+                                   WHERE prod_codigo = @p";
+            banco.addParameters("p", codigoProcurado);
+            var dados = banco.ExecuteReader();
+
+            dados.Read();
+            var idProduto = dados[0];
+            var nomeBanco = dados[1];
+            var codigoBanco = dados[2];
+            var valorBanco = dados[3];
+
+            var produtoBanco = new Produto();
+
+            produtoBanco.nomeProduto = Convert.ToString(nomeBanco);
+            produtoBanco.codigoProduto = Convert.ToString(codigoBanco);
+            produtoBanco.valorProduto = Convert.ToString(valorBanco);
+
+            Console.Clear();
+            Console.WriteLine("~~~~~~~~~~~~ INFORMAÇÕES DO PRODUTO ~~~~~~~~~~~~");
+            Console.WriteLine("\nNOME DO PRODUTO: " + dados[1] + "\nCODIGO DO PRODUTO: " + dados[2]);
+
+            Console.WriteLine("\n\n\nDIGITE [3] SE DESEJA EDITAR PRODUTO");
+            Console.WriteLine("DIGITE [0] PARA VOLTAR");
+
+            int opcaoSelecionada;
+            opcaoSelecionada = int.Parse(Console.ReadLine());
+
+            if (opcaoSelecionada == 3)
             {
-                if (codigoProcurado == itemProduto.codigoProduto)
-                {
-                    Console.Clear();
-                    Console.WriteLine("~~~~~~~~~~~~ INFORMAÇÕES DO PRODUTO ~~~~~~~~~~~~");
-                    Console.WriteLine("\nNOME DO PRODUTO: " + itemProduto.nomeProduto + "\nCODIGO DO PRODUTO: " + itemProduto.codigoProduto);
+                Console.Write("\nNOVO CODIGO DO PRODUTO: ");
+                produtoBanco.codigoProduto = Console.ReadLine();
 
-                    Console.WriteLine("\n\n\nDIGITE [3] SE DESEJA EDITAR PRODUTO");
-                    Console.WriteLine("DIGITE [0] PARA VOLTAR");
+                Console.Write("NOVO NOME PRODUTO: ");
+                produtoBanco.nomeProduto = Console.ReadLine();
 
-                    int opcaoSelecionada;
-                    opcaoSelecionada = Int32.Parse(Console.ReadLine());
+                Console.Write("NOVO VALOR DO PRODUTO: ");
+                produtoBanco.valorProduto = Console.ReadLine();
 
-                   if(opcaoSelecionada==3)
-                    {
-                        Console.Write("\nNOVO CODIGO DO PRODUTO: ");
-                        itemProduto.codigoProduto = Console.ReadLine();
-                    
-                        Console.Write("NOVO NOME PRODUTO: ");
-                        itemProduto.nomeProduto = Console.ReadLine();
+                banco.sql = @"UPDATE public.produto SET prod_nome = @nome , prod_codigo = @codigo, prod_valor = @valor
+                            WHERE prod_codigo = @p";
 
-                        Console.Write("NOVO VALOR DO PRODUTO: ");
-                        itemProduto.valorProduto = Convert.ToDouble(Console.ReadLine());
+                banco.addParameters("nome", produtoBanco.nomeProduto);
+                banco.addParameters("codigo", produtoBanco.codigoProduto);
+                banco.addParameters("valor", produtoBanco.valorProduto);
+                banco.addParameters("p", codigoProcurado);
 
-                    }                    
-                }
-
+                dados.Close();
+                dados = banco.ExecuteReader();
             }
         }
 
