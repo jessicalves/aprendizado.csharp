@@ -19,7 +19,7 @@ namespace Loja
 
         public Banco()
         {
-            connectionstring = "User ID=postgres;Password=1234;Host=localhost;Port=5432;Database=postgres;";
+            connectionstring = "User ID=postgres;Password=1234;Host=localhost;Port=5432;Database=loja;";
             connectarbanco();
             parametros = new Dictionary<string, string>();
         }
