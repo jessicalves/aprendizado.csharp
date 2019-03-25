@@ -42,10 +42,14 @@ namespace Loja
             var nomeBanco = dados[1];
             var cpfBanco = dados[2];
 
-            var clienteBanco = new Cliente();
+            var clienteBanco = new Cliente()
+            {
 
-            clienteBanco.nomeCliente = Convert.ToString(nomeBanco);
-            clienteBanco.cfpCliente = Convert.ToString(cpfBanco);
+                nomeCliente = Convert.ToString(nomeBanco),
+                cfpCliente = Convert.ToString(cpfBanco),
+                idCliente = Convert.ToInt32(idCliente)
+            };
+
 
             Console.Clear();
             Console.WriteLine("~~~~~~~~~~~~ INFORMAÇÕES DO CLIENTE ~~~~~~~~~~~~");
@@ -78,34 +82,35 @@ namespace Loja
 
                     break;
 
-                    //case 4:
-                    //    Console.Clear();
-                    //    Produto.listarProdutos();
-                    //    Console.WriteLine("\n\nCODIGO DO PRODUTO:");
-                    //    string produtos = Console.ReadLine();
-                    //    clienteBanco.fazerCompra(produtos);
+                case 4:
+                    Console.Clear();
+                    Produto.listarProdutos();
+                    Console.WriteLine("\n\nCODIGO DO PRODUTO:");
+                    string produtos = Console.ReadLine();
 
-                    //    Console.WriteLine("\nPEDIDO FEITO COM SUCESSO");
-                    //    Console.ReadKey();
+                    Banco b = new Banco
+                    {
+                        sql = @"INSERT INTO public.pedido (pedi_clie_id) VALUES (@clie_id) RETURNING  pedi_id;"
+                    };
 
-                    //    break;
+                    b.addParameters("clie_id", clienteBanco.idCliente);
+                    var zz = b.GetInt();
 
-                    //case 5:
-                    //    Console.Clear();
-                    //    Console.WriteLine("~~~~~~~~~~~~ PEDIDOS DO CLIENTE ~~~~~~~~~~~~");
-                    //    Console.WriteLine("\n\nCLIENTE: " + cliente.nomeCliente + "\nCPF: " + cliente.cfpCliente);
+                    clienteBanco.fazerCompra(produtos);
 
-                    //    foreach (var pedido in cliente.listPedidos)
-                    //    {
-                    //        Console.WriteLine("\n\nPEDIDO: " + pedido.idPedido + "\n");
+                    Console.WriteLine("\nPEDIDO FEITO COM SUCESSO");
+                    Console.ReadKey();
 
-                    //        foreach (var produto in pedido.listaProdutosComprados)
-                    //        {
-                    //            Console.WriteLine("\t" + produto.nomeProduto);
-                    //        }
-                    //    }
-                    //    Console.ReadKey();
-                    //    break;
+                    break;
+
+                case 5:
+                    Console.Clear();
+                    Console.WriteLine("~~~~~~~~~~~~ PEDIDOS DO CLIENTE ~~~~~~~~~~~~");
+                    Console.WriteLine("\n\nCLIENTE: " + clienteBanco.nomeCliente + "\nCPF: " + clienteBanco.cfpCliente);
+
+                   
+                    Console.ReadKey();
+                    break;
             }
         }
 
@@ -113,7 +118,7 @@ namespace Loja
         {
             Banco banco = new Banco();
             banco.sql = @"INSERT INTO public.cliente (clie_nome,clie_cpf) VALUES (@nome,@cpf);";
-            banco.addParameters("nome",cliente.nomeCliente);
+            banco.addParameters("nome", cliente.nomeCliente);
             banco.addParameters("cpf", cliente.cfpCliente);
             var dados = banco.ExecuteReader();
         }

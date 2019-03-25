@@ -1,6 +1,7 @@
 ﻿using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Loja
 {
@@ -12,7 +13,9 @@ namespace Loja
 
         private NpgsqlDataReader datareader { get; set; }
 
-        public Dictionary<string, string> parametros { get; set; }
+        private NpgsqlCommand _command { get; set; }
+
+        public Dictionary<object, object> parametros { get; set; }
 
         public string sql { get; set; }
 
@@ -20,7 +23,8 @@ namespace Loja
         {
             connectionstring = "User ID=postgres;Password=1234;Host=localhost;Port=5432;Database=loja;";
             connectarbanco();
-            parametros = new Dictionary<string, string>();
+            parametros = new Dictionary<object, object>();
+            _command = null;
         }
 
         private static void connectarbanco()
@@ -38,7 +42,7 @@ namespace Loja
             {
                 foreach (var p in parametros)
                 {
-                    cmd.Parameters.AddWithValue(p.Key, p.Value);
+                    cmd.Parameters.AddWithValue(p.Key.ToString(), p.Value);
                 }
                 parametros.Clear();
                 if (datareader != null) datareader.Close();
@@ -47,7 +51,30 @@ namespace Loja
                 return datareader;
             }
         }
-        public void addParameters(string s, string p)
+
+        public DataTable getDataTable()
+        {
+            DataTable dt = new DataTable();
+            if (sql == null) throw new ArgumentNullException();
+            using (_command = new NpgsqlCommand(sql, connection))
+            {
+                foreach (var p in parametros)
+                {
+                    _command.Parameters.AddWithValue(p.Key.ToString(), p.Value);
+                }
+                parametros.Clear();
+
+                dt.Load(_command.ExecuteReader());
+                return dt;
+            }
+        }
+
+        public int GetInt()
+        {
+            return Convert.ToInt32(getDataTable().Rows[0][0]);
+        }
+
+        public void addParameters(object s, object p)
         {
             parametros.Add(s, p);
         }
