@@ -86,16 +86,17 @@ namespace Loja
                     Produto.listarProdutos();
                     Console.WriteLine("\n\nCODIGO DO PRODUTO:");
                     string produtos = Console.ReadLine();
+                    Console.WriteLine("\n\nQUANTIDADE:");
+                    string quantidade = Console.ReadLine();
 
                     Banco b = new Banco
                     {
                         sql = @"INSERT INTO public.pedido (pedi_clie_id) VALUES (@clie_id) RETURNING  pedi_id;"
                     };
-
                     b.addParameters("clie_id", clienteBanco.idCliente);
-                    var zz = b.GetInt();
+                    var id = b.GetInt();
 
-                    clienteBanco.fazerCompra(produtos);
+                    clienteBanco.fazerCompra(id,produtos,quantidade);
 
                     Console.WriteLine("\nPEDIDO FEITO COM SUCESSO");
                     Console.ReadKey();
@@ -119,7 +120,15 @@ namespace Loja
 
                     banco.addParameters("id", clienteBanco.idCliente);
                     var ds = banco.getDataTable();
-                    
+
+                    Console.WriteLine("\nPEDIDO" + "\t" + "PRODUTO");
+
+                    for (int i = 0; i < ds.Rows.Count; i++)
+                    {
+                        Console.WriteLine("|" + ds.Rows[i][2] + "\t" + "|" + ds.Rows[i][3] + "\t");
+                    }
+                    Console.ReadKey();
+
                     Console.ReadKey();
                     break;
             }

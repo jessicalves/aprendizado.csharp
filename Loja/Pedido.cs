@@ -19,16 +19,16 @@ namespace Loja
         public int idPedido;
         public int quantidadeProduto;
 
-        public void adicionarProduto(string produtos)
-        {
+        //public void adicionarProduto(string produtos)
+        //{
+        //    var arr = produtos.Split(',');
 
-            var arr = produtos.Split(',');
+        //    foreach (var codigoProduto in arr)
+        //    {
+        //        var produto = Produto.buscarProduto(codigoProduto);
 
-            foreach(var codigoProduto in arr)
-            {
-                var produto = Produto.buscarProduto(codigoProduto);
-                listaProdutosComprados.Add(produto);
-            }
-        }
+        //        listaProdutosComprados.Add(produto);
+        //    }
+        //}
     }
 }

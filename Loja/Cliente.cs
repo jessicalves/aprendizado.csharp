@@ -18,15 +18,24 @@ namespace Loja
         public string cfpCliente;
         public int idCliente { get; set; }
 
-        public void fazerCompra(string compraProdutos)
+        public void fazerCompra(int idPedido, string compraProdutos, string quantidade)
         {
             var novoPedido = new Pedido();
 
-            novoPedido.adicionarProduto(compraProdutos);
+            var arr =compraProdutos.Split(',');
+            var qttarr = quantidade.Split(',');
 
-            listPedidos.Add(novoPedido);
+            Banco b = new Banco();
 
-            novoPedido.idPedido = listPedidos[listPedidos.Count-1].idPedido+1;
+            for(int i = 0; i < arr.Length; i++)
+            {
+                b.sql = @"INSERT INTO public.pedido_x_produto (pepr_pedi_id,pepr_prod_id,pepr_quantidade_prod) VALUES (@prod_id,@prod,@qnt);";
+                b.addParameters("prod_id", idPedido);
+                b.addParameters("prod", Convert.ToInt32(arr[i]));
+                b.addParameters("qnt", Convert.ToInt32(qttarr[i]));
+                b.getDataTable();
+            }
+
 
         }
     }

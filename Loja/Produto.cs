@@ -16,7 +16,7 @@ namespace Loja
         {
             Console.Clear();
             Console.WriteLine("-------- LISTA DE PRODUTOS -----------");
-            Console.WriteLine("|NOME\t\t" + "|CODIGO\t" + "|VALOR R$");
+            Console.WriteLine("|ID PRODUDO\t"+"|NOME\t" + "|CODIGO\t" + "|VALOR R$");
             Console.WriteLine("--------------------------------------");
 
             Banco banco = new Banco();
@@ -26,7 +26,7 @@ namespace Loja
 
             for(int i =0; i<ds.Rows.Count;i++)
             {
-                Console.WriteLine("|" + ds.Rows[i][1] + "\t" + "|" + ds.Rows[i][2] + "\t" + "|" + ds.Rows[i][3] + "\t");
+                Console.WriteLine("|"+ ds.Rows[i][0]+ "\t" + "|" + ds.Rows[i][1] + "\t" + "|" + ds.Rows[i][2] + "\t" + "|" + ds.Rows[i][3] + "\t");
             }
             Console.ReadKey();
         }
@@ -116,9 +116,9 @@ namespace Loja
             }
         }
 
-        public static Produto buscarProduto(string codigoProduto)
-        {
-            return listProdutos.Find(x => x.codigoProduto == codigoProduto);
-        }
+        //public static Produto buscarProduto(string codigoProduto)
+        //{
+        //    return listProdutos.Find(x => x.codigoProduto == codigoProduto);                 
+        //}
     }
 }

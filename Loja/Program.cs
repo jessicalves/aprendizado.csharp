@@ -224,7 +224,6 @@ namespace Loja
                                 removerProduto = Console.ReadLine();
                                 Produto.RremoverProduto(removerProduto);
 
-
                                 Console.WriteLine("\n\nDESEJA REMOVER MAIS PRODUTOS? [s/n]");
                                 var respostaRemover = Console.ReadLine();
 
