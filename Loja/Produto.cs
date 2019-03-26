@@ -45,15 +45,18 @@ namespace Loja
         public static void RremoverProduto(string codigoParaRemover)
         {
             string remover = codigoParaRemover;
-            Produto removerProduto = listProdutos.Find(x => x.codigoProduto == remover);
+            //Produto removerProduto = listProdutos.Find(x => x.codigoProduto == remover);
+            Banco banco = new Banco();
+            banco.sql = @"DELETE FROM public.produto WHERE prod_codigo = @cod";
+            banco.addParameters("cod", remover);
+            banco.getDataTable();
 
-            if (removerProduto == null)
+            if (remover == null)
             {
                 Console.WriteLine("\n\n~~~~~ PRODUTO NÃO EXISTE ~~~~~~");
             }
             else
             {
-                listProdutos.Remove(removerProduto);
                 Console.WriteLine("\n\n~~~~~ PRODUTO REMOVIDO COM SUCESSO ~~~~~");
             }
         }

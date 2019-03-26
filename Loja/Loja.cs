@@ -137,23 +137,22 @@ namespace Loja
         public static void Remover(string clienteParaRemover)
         {
             string remover = clienteParaRemover;
-            Cliente removerCliente = listClientes.Find(x => x.cfpCliente == remover);
+            //Cliente removerCliente = listClientes.Find(x => x.cfpCliente == remover);
 
-            if (removerCliente == null)
+            Banco banco = new Banco();
+            banco.sql = @"DELETE FROM public.cliente WHERE clie_cpf = @cpf";        
+            banco.addParameters("cpf", remover);
+            banco.getDataTable();
+
+            if (remover == null)
             {
                 Console.WriteLine("\n\n~~~~~ CLIENTE NÃO EXITE ~~~~~~");
             }
             else
             {
-                listClientes.Remove(removerCliente);
                 Console.WriteLine("\n\n~~~~~ CLIENTE REMOVIDO COM SUCESSO ~~~~~");
             }
         }
-
-        //public static Cliente acharCliente(string cpfComprador)
-        //{
-        //    return listClientes.Find(x => x.cfpCliente == cpfComprador);
-        //}
     }
 }
 
