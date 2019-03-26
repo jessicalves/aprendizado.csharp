@@ -52,10 +52,9 @@ namespace Loja
                 idCliente = Convert.ToInt32(idCliente)
             };
 
-
             Console.Clear();
             Console.WriteLine("~~~~~~~~~~~~ INFORMAÇÕES DO CLIENTE ~~~~~~~~~~~~");
-            Console.WriteLine("\nNOME DO CLIENTE: " + dados[1] + "\nCPF DO CLIENTE: " + dados[2]);
+            Console.WriteLine("\nNOME DO CLIENTE: " + dados.Rows[0][1] + "\nCPF DO CLIENTE: " + dados.Rows[0][2]);
 
             Console.WriteLine("\n\n\n[3]EDITAR CLIENTE ");
             Console.WriteLine("[4]NOVO PEDIDO");
