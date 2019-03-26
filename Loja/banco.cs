@@ -74,6 +74,7 @@ namespace Loja
             return Convert.ToInt32(getDataTable().Rows[0][0]);
         }
 
+
         public void addParameters(object s, object p)
         {
             parametros.Add(s, p);

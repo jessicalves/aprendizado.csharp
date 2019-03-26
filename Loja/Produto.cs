@@ -24,11 +24,11 @@ namespace Loja
             Banco banco = new Banco();
             banco.sql = ("SELECT prod_id,prod_nome, prod_codigo, prod_valor FROM public.produto ORDER BY prod_id");
 
-            NpgsqlDataReader dados = banco.ExecuteReader();
+            var dados = banco.getDataTable();
 
-            while (dados.Read())
+            for(int i =0; i<dados.Rows.Count;i++)
             {
-                Console.WriteLine("|" + dados[1] + "\t" + "|" + dados[2] + "\t" + "|" + dados[3] + "\t");
+                Console.WriteLine("|" + [1] + "\t" + "|" + dados[2] + "\t" + "|" + dados[3] + "\t");
             }
             Console.ReadKey();
         }

@@ -17,11 +17,13 @@ namespace Loja
 
             Banco banco = new Banco();
             banco.sql = ("SELECT clie_id, clie_nome, clie_cpf FROM public.cliente ORDER BY clie_id");
-            NpgsqlDataReader ds = banco.ExecuteReader();
+            var  ds = banco.getDataTable();
 
-            while (ds.Read())
-            {
-                Console.WriteLine("|" + ds[1] + "\t" + "|" + ds[2] + "\t");
+            for(int i = 0; i<ds.Rows.Count; i++)
+            { 
+
+                    Console.WriteLine("|" + ds.Rows[i][1] + "\t" + "|" + ds.Rows[i][2] + "\t");
+
             }
             Console.ReadKey();
         }
@@ -35,12 +37,12 @@ namespace Loja
                                    FROM public.cliente     
                                    WHERE clie_cpf = @p";
             banco.addParameters("p", cpfProcurado);
-            var dados = banco.ExecuteReader();
+            var dados = banco.getDataTable();
 
-            dados.Read();
-            var idCliente = dados[0];
-            var nomeBanco = dados[1];
-            var cpfBanco = dados[2];
+            
+            var idCliente = dados.Rows[0][0];
+            var nomeBanco = dados.Rows[0][1];
+            var cpfBanco = dados.Rows[0][2];
 
             var clienteBanco = new Cliente()
             {
@@ -77,8 +79,7 @@ namespace Loja
                     banco.addParameters("cpf", clienteBanco.cfpCliente);
                     banco.addParameters("p", cpfProcurado);
 
-                    dados.Close();
-                    dados = banco.ExecuteReader();
+                    banco.getDataTable();
 
                     break;
 
@@ -108,7 +109,19 @@ namespace Loja
                     Console.WriteLine("~~~~~~~~~~~~ PEDIDOS DO CLIENTE ~~~~~~~~~~~~");
                     Console.WriteLine("\n\nCLIENTE: " + clienteBanco.nomeCliente + "\nCPF: " + clienteBanco.cfpCliente);
 
-                   
+                    banco.sql = @"SELECT clie_id,clie_nome,pedi_id, prod_nome
+                                FROM public.cliente
+                                INNER JOIN public.pedido
+                                ON clie_id = pedi_clie_id
+                                INNER JOIN public.pedido_x_produto
+                                ON pedi_id = pepr_pedi_id
+                                INNER JOIN public.produto
+                                ON prod_id = pepr_prod_id
+                                WHERE clie_id = @id";
+
+                    banco.addParameters("id", clienteBanco.idCliente);
+                    var ds = banco.getDataTable();
+                    
                     Console.ReadKey();
                     break;
             }
@@ -120,7 +133,7 @@ namespace Loja
             banco.sql = @"INSERT INTO public.cliente (clie_nome,clie_cpf) VALUES (@nome,@cpf);";
             banco.addParameters("nome", cliente.nomeCliente);
             banco.addParameters("cpf", cliente.cfpCliente);
-            var dados = banco.ExecuteReader();
+            banco.getDataTable();
         }
 
         public static void Remover(string clienteParaRemover)
