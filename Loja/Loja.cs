@@ -38,7 +38,6 @@ namespace Loja
                                    WHERE clie_cpf = @p";
             banco.addParameters("p", cpfProcurado);
             var dados = banco.getDataTable();
-
             
             var idCliente = dados.Rows[0][0];
             var nomeBanco = dados.Rows[0][1];

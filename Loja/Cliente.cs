@@ -18,8 +18,6 @@ namespace Loja
         public string cfpCliente;
         public int idCliente { get; set; }
 
-
-
         public void fazerCompra(string compraProdutos)
         {
             var novoPedido = new Pedido();

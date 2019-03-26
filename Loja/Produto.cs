@@ -8,8 +8,6 @@ namespace Loja
     {
         public static List<Produto> listProdutos = new List<Produto>() { };
 
-
-
         public string nomeProduto;
         public string codigoProduto;
         public string valorProduto;
@@ -41,7 +39,7 @@ namespace Loja
             banco.addParameters("codigo", produto.codigoProduto);
             banco.addParameters("valor", produto.valorProduto);
 
-            var dados = banco.ExecuteReader();
+            banco.getDataTable();
         }
 
         public static void RremoverProduto(string codigoParaRemover)
@@ -69,13 +67,12 @@ namespace Loja
                                    FROM public.produto     
                                    WHERE prod_codigo = @p";
             banco.addParameters("p", codigoProcurado);
-            var dados = banco.ExecuteReader();
-
-            dados.Read();
-            var idProduto = dados[0];
-            var nomeBanco = dados[1];
-            var codigoBanco = dados[2];
-            var valorBanco = dados[3];
+            var dados = banco.getDataTable();
+            
+            var idProduto = dados.Rows[0][0];
+            var nomeBanco = dados.Rows[0][1];
+            var codigoBanco = dados.Rows[0][2];
+            var valorBanco = dados.Rows[0][3];
 
             var produtoBanco = new Produto();
 
@@ -85,7 +82,7 @@ namespace Loja
 
             Console.Clear();
             Console.WriteLine("~~~~~~~~~~~~ INFORMAÇÕES DO PRODUTO ~~~~~~~~~~~~");
-            Console.WriteLine("\nNOME DO PRODUTO: " + dados[1] + "\nCODIGO DO PRODUTO: " + dados[2]);
+            Console.WriteLine("\nNOME DO PRODUTO: " + dados.Rows[0][1] + "\nCODIGO DO PRODUTO: " + dados.Rows[0][2]);
 
             Console.WriteLine("\n\n\nDIGITE [3] SE DESEJA EDITAR PRODUTO");
             Console.WriteLine("DIGITE [0] PARA VOLTAR");
@@ -112,8 +109,7 @@ namespace Loja
                 banco.addParameters("valor", produtoBanco.valorProduto);
                 banco.addParameters("p", codigoProcurado);
 
-                dados.Close();
-                dados = banco.ExecuteReader();
+                banco.getDataTable();
             }
         }
 

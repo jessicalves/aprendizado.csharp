@@ -6,9 +6,6 @@ namespace Loja
     {
         static void Main(string[] args)
         {
-            
-
-
             int opcaoDoInicio;
             int voltarTelaInicio = 1;
             
